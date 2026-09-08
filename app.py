@@ -14,7 +14,7 @@ def get_gsheets_connection():
 gc = get_gsheets_connection()
 
 # --- MASUKIN 1 ID GOOGLE SHEETS LU DI SINI ---
-SPREADSHEET_ID = 'ID_SPREADSHEET_LU_DISINI' 
+SPREADSHEET_ID = '/1s-_CVIJuccM_IEjIMfJU8lUV9s0TTWkS-pli5Aa3ciw/' 
 
 if 'nama_sales' not in st.session_state:
     st.session_state.nama_sales = None
