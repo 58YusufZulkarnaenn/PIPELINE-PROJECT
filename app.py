@@ -7,7 +7,8 @@ st.set_page_config(page_title="Automasi Pipeline Corporate", layout="centered")
 
 @st.cache_resource
 def get_gsheets_connection():
-    gc = gspread.service_account(filename='credentials.json')
+    creds_dict = dict(st.secrets["gcp_service_account"])
+    gc = gspread.service_account_from_dict(creds_dict)
     return gc
 
 gc = get_gsheets_connection()
