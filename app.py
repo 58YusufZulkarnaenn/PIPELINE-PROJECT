@@ -133,18 +133,25 @@ else:
                         row_to_insert.append("")
                         kolom_tidak_dikenali.append(header)
 
-                    # 1. Kita jadikan satu kolom sebagai "patokan" hitungan.
-                    # col_values(3) artinya kita ngecek Kolom C (misal: kolom AE NAME atau CUSTOMER NAME).
-                    # Fungsi ini pinter, dia cuma ngitung sel yang ada TULISANNYA aja, dropdown kosong nggak dihitung.
-                    kolom_patokan = ws_target.col_values(3) 
+                    # 1. Tarik SEMUA data di sheet itu sekaligus (termasuk yang kosong tapi ada formatnya)
+                    semua_baris = ws_target.get_all_values()
 
-                    # 2. Cari tau baris kosong selanjutnya (Jumlah baris yang ada isinya + 1)
-                    baris_kosong_selanjutnya = len(kolom_patokan) + 1
+                    # 2. Set default baris tujuan di paling bawah (jaga-jaga kalau full)
+                    baris_tujuan = len(semua_baris) + 1 
 
-                    # 3. Kita "timpa" (update) baris kosong tersebut pakai data baru.
-                    # Penting: row_to_insert harus dikurung pakai kurung siku lagi [...] biar jadi list 2 dimensi.
-                    ws_target.update(f"A{baris_kosong_selanjutnya}", [row_to_insert])
+                    # 3. Scan barisnya dari atas ke bawah buat nyari yang bener-bener kosong
+                    for i, baris in enumerate(semua_baris):
+                        # Skip baris pertama (header). Kita fokus ngecek isi datanya.
+                        if i > 0: 
+                            # Cek Kolom C (AE NAME, alias index ke-2). 
+                            # Kalau kolom itu kosong ("") atau barisnya pendek, FIX ini baris kosong lu!
+                            if len(baris) < 3 or baris[2].strip() == "":
+                                baris_tujuan = i + 1
+                                break # Berhenti nyari kalau udah ketemu
 
+                # 4. Timpa datanya persis di baris yang kosong tersebut
+                ws_target.update(range_name=f"A{baris_tujuan}", values=[row_to_insert])
+                
                 st.success(f"Mantap bro! Data kunjungan {selected_customer} berhasil kesimpen di tab {st.session_state.nama_sales}.")
                 if kolom_tidak_dikenali:
                     st.warning(f"Ada kolom di sheet yang belum ke-mapping (dikosongin): {kolom_tidak_dikenali}. Cek lagi nama header-nya, mungkin beda sama yang ada di data_map.")
