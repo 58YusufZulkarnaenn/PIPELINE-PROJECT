@@ -13,15 +13,15 @@ def get_gsheets_connection():
 
 gc = get_gsheets_connection()
 
-# --- MASUKIN ID GOOGLE SHEETS LU DI SINI ---
-SPREADSHEET_ID = '1s-_CVIJuccM_IEjIMfJU8lUV9s0TTWkS-pli5Aa3ciw'
-
+# --- PISAHIN ID MASTER DAN TARGET ---
+MASTER_SPREADSHEET_ID = '1s-_CVIJuccM_IEjIMfJU8lUV9s0TTWkS-pli5Aa3ciw' # Tempat load data master
+TARGET_SPREADSHEET_ID = '1MlUmZewvwA97thP7TBAMO1LZFaHqg6wzP6CEIWi4xx4' # ID dari link lu barusan (tempat nulis)
 
 # Cache data master 5 menit biar gak nge-query Google tiap reload,
 # tapi tetep update kalau ada perubahan data.
 @st.cache_data(ttl=300)
 def load_master_data(nama_sales):
-    sh = gc.open_by_key(SPREADSHEET_ID)
+    sh = gc.open_by_key(MASTER_SPREADSHEET_ID) # <-- Pastiin pakai MASTER_SPREADSHEET_ID
     ws_master = sh.worksheet(f"MASTER_{nama_sales}")
     data_master = ws_master.get_all_records()
     return pd.DataFrame(data_master)
@@ -87,9 +87,10 @@ else:
 
         if submit:
             try:
-                ws_target = sh_target = gc.open_by_key(SPREADSHEET_ID).worksheet(st.session_state.nama_sales)
+                # V V V Ganti bagian ini nembak ke TARGET_SPREADSHEET_ID V V V
+                ws_target = gc.open_by_key(TARGET_SPREADSHEET_ID).worksheet(st.session_state.nama_sales)
 
-                # Ambil header ASLI dari baris pertama tab tujuan (misal tab "SENA")
+                # Ambil header ASLI dari baris pertama tab tujuan
                 header_row = ws_target.row_values(1)
 
                 # Data yang mau ditulis, dipetakan pakai NAMA KOLOM (bukan posisi urutan).
