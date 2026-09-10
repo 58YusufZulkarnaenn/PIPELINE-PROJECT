@@ -133,7 +133,17 @@ else:
                         row_to_insert.append("")
                         kolom_tidak_dikenali.append(header)
 
-                ws_target.append_row(row_to_insert)
+# 1. Kita jadikan satu kolom sebagai "patokan" hitungan.
+# col_values(3) artinya kita ngecek Kolom C (misal: kolom AE NAME atau CUSTOMER NAME).
+# Fungsi ini pinter, dia cuma ngitung sel yang ada TULISANNYA aja, dropdown kosong nggak dihitung.
+kolom_patokan = ws_target.col_values(3) 
+
+# 2. Cari tau baris kosong selanjutnya (Jumlah baris yang ada isinya + 1)
+baris_kosong_selanjutnya = len(kolom_patokan) + 1
+
+# 3. Kita "timpa" (update) baris kosong tersebut pakai data baru.
+# Penting: row_to_insert harus dikurung pakai kurung siku lagi [...] biar jadi list 2 dimensi.
+ws_target.update(f"A{baris_kosong_selanjutnya}", [row_to_insert])
 
                 st.success(f"Mantap bro! Data kunjungan {selected_customer} berhasil kesimpen di tab {st.session_state.nama_sales}.")
                 if kolom_tidak_dikenali:
