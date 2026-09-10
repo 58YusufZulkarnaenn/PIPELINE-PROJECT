@@ -97,7 +97,7 @@ else:
                 # PENTING: sesuaikan "key" di kiri (nama kolom) ini dengan header
                 # yang ADA PERSIS di tab SENA lo (huruf besar/kecil & spasi harus sama).
                 data_map = {
-                    "TANGGAL": str(tanggal_kunjungan),
+                    "DATE": str(tanggal_kunjungan),
                     "AE NAME": st.session_state.nama_sales,
                     "CUSTOMER NAME": selected_customer,
                     "PIC CUSTOMER NAME": str(cust_data.get('PIC CUSTOMER NAME', '')),
