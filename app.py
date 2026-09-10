@@ -91,7 +91,7 @@ else:
                 ws_target = gc.open_by_key(TARGET_SPREADSHEET_ID).worksheet(st.session_state.nama_sales)
 
                 # Ambil header ASLI dari baris pertama tab tujuan
-                header_row = ws_target.row_values(1)
+                header_row = ws_target.row_values(2)
 
                 # Data yang mau ditulis, dipetakan pakai NAMA KOLOM (bukan posisi urutan).
                 # PENTING: sesuaikan "key" di kiri (nama kolom) ini dengan header
