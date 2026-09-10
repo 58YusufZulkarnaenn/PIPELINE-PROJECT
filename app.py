@@ -71,7 +71,7 @@ else:
 
         # Tanggal otomatis pakai hari ini, tinggal ditampilin (gak perlu input manual)
         tanggal_kunjungan = date.today()
-        st.caption(f"Tanggal kunjungan: **{tanggal_kunjungan.strftime('%d-%m-%Y')}** (otomatis, tanggal hari ini)")
+        st.caption(f"Tanggal kunjungan: **{tanggal_kunjungan.strftime('%y-%m-%d')}** (otomatis, tanggal hari ini)")
 
         cust_data = df_master[df_master['CUSTOMER NAME'] == selected_customer].iloc[0]
 
