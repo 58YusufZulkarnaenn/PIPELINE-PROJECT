@@ -1,0 +1,16 @@
+name: Keep Streamlit App Alive
+
+on:
+  schedule:
+    # Cron expression uses UTC time, this represents execution at 1:17, 7:17, 13:17, 19:17 (UTC+8 time) every day
+    # Recommendation: avoid the start of the hour (like :00 or :30) to reduce the probability of being delayed [citation:14]
+    - cron: '17 */6 * * *'
+  workflow_dispatch: # Allows you to manually trigger this workflow for testing
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Streamlit App
+        run: |
+          curl -s -o /dev/null -w "%{http_code}\n" https://your-app-name.streamlit.app/
