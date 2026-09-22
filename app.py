@@ -232,9 +232,6 @@ else:
         if not selected_customer:
             st.error("Pilih customer dulu bro!")
             st.stop()
-        if not progress.strip():
-            st.error("Progress / Hasil Meeting wajib diisi!")
-            st.stop()
 
         try:
             gc = get_gsheets_connection()
